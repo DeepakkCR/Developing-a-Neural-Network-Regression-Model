@@ -52,7 +52,17 @@ Use the trained model to predict  for a new input value .
 class NeuralNet(nn.Module):
     def __init__(self):
         super().__init__()
-        #Include your code here
+        self.fc1= nn.Linear(1,8)
+        self.fc2= nn.Linear(8,10)
+        self.fc3= nn.Linear(10,1)
+        self.relu=nn.ReLU()
+        self.history={'loss':[]}
+
+  def forward(self,x):
+        x = self.relu(self.fc1(x))
+        x = self.relu(self.fc2(x))
+        x = self.fc3(x)
+        return x
 
 
 
@@ -61,20 +71,28 @@ class NeuralNet(nn.Module):
 
 
 def train_model(ai_brain, X_train, y_train, criterion, optimizer, epochs=2000):
-    #Include your code here
+    for epoch in range (epochs):
+      optimizer.zero_grad()
+      loss = criterion(ai_brain(X_train),y_train)
+      loss.backward()
+      optimizer.step()
+      ai_brain.history['loss'].append(loss.item())
+      if epoch % 200 == 0:
+          print(f'Epoch [{epoch}/{epochs}], Loss: {loss.item():.6f}')
 
 ```
 
 ### Dataset Information
-Include screenshot of the generated data
+<img width="706" height="320" alt="image" src="https://github.com/user-attachments/assets/08492d50-776f-44f8-beba-910bf6fe9792" />
+
 
 ### OUTPUT
 
 ### Training Loss Vs Iteration Plot
-Include your plot here
+<img width="868" height="648" alt="image" src="https://github.com/user-attachments/assets/a43cdacb-4c8d-4e42-b4d8-933e4d32b958" />
 
 ### New Sample Data Prediction
-Include your sample input and output here
+<img width="944" height="150" alt="image" src="https://github.com/user-attachments/assets/8ab6debd-b0e8-4f41-ba02-84926fdbf964" />
 
 ## RESULT
 Thus, a neural network regression model was successfully developed and trained using PyTorch.
